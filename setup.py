@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='err',
+    name='CWA',
     version='0.1',
     author='Theo Koester',
     author_email='theopkoester@icloud.com',
