@@ -1,6 +1,6 @@
 from mongoengine import EmbeddedDocument, BooleanField
 
-from Cable.camera import DSLRCamera
+from CWA.Cable.camera import DSLRCamera
 
 #notes
 class Fork(EmbeddedDocument):

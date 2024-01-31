@@ -1,14 +1,11 @@
-import threading
-import time
-
-from mongoengine import Document, StringField, IntField, BinaryField, BooleanField, EmbeddedDocumentField, ListField, \
+from mongoengine import Document, StringField, IntField, BooleanField, EmbeddedDocumentField, ListField, \
     FloatField, ReferenceField
 
-from Cable.carrier import Carrier
-from Cable.dc_motor import DCMotor
-from Cable.fork import Fork
-from Cable.magazine import Magazine
-from Cable.sensor import MagneticSensor
+from CWA.Cable.carrier import Carrier
+from CWA.Cable.dc_motor import DCMotor
+from CWA.Cable.fork import Fork
+from CWA.Cable.magazine import Magazine
+from CWA.Cable.sensor import MagneticSensor
 
 
 class Cable(Document):
