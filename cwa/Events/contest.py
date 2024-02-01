@@ -1,5 +1,4 @@
 from datetime import datetime
-from urllib.error import HTTPError
 
 import mongoengine as db
 # from google.cloud import storage

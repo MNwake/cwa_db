@@ -1,5 +1,4 @@
-from CWA.Events.user import User
-
+from cwa.Events import User
 
 class Admin(User):
     pass

@@ -3,7 +3,8 @@ from datetime import datetime
 import mongoengine as db
 from mongoengine import ListField, EmbeddedDocumentField
 
-from CWA.Cable.carrier import Carrier
+from cwa.Cable import Carrier
+
 
 
 class LiveContest(db.Document):

@@ -3,7 +3,8 @@ from datetime import datetime
 
 import mongoengine as db
 
-from scorecard import Scorecard
+from cwa.Events import Scorecard
+
 
 
 class RiderRankings(db.Document):

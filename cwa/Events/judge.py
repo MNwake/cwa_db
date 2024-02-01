@@ -1,4 +1,4 @@
-from user import User
+from cwa.Events import User
 
 
 class Judge(User):
