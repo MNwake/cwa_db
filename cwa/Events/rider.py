@@ -2,7 +2,8 @@ from datetime import datetime
 from urllib.error import HTTPError
 import mongoengine as db
 
-from user import User
+from cwa.Events import User
+
 
 
 class Rider(User):
