@@ -4,3 +4,11 @@ mongoengine==0.27.0
 numpy==1.26.3
 opencv-python==4.9.0.80
 pymongo==4.6.1
+
+
+kivymd.create_project \
+    MVC \
+    /Users/theokoester/dev/projects/python/CWA/cableops \
+    app \
+    python3.10 \
+    2.3.0 \

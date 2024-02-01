@@ -25,21 +25,22 @@ class DCMotor:
             self.pwm.start(self.current_speed)  # Start with 0 duty cycle for soft start
 
     def change_speed(self, speed, increment=5, delay=0.1):
-        """ Change the motor speed gradually """
-        steps = abs(speed - self.current_speed) // increment
+        if 'linux' in sys.platform:
+            """ Change the motor speed gradually """
+            steps = abs(speed - self.current_speed) // increment
 
-        for _ in range(steps):
-            if speed > self.current_speed:
-                self.current_speed += increment
-            else:
-                self.current_speed -= increment
+            for _ in range(steps):
+                if speed > self.current_speed:
+                    self.current_speed += increment
+                else:
+                    self.current_speed -= increment
 
+                self.pwm.ChangeDutyCycle(self.current_speed)
+                sleep(delay)
+
+            # Set to final speed if it's not exactly divisible by increment
+            self.current_speed = speed
             self.pwm.ChangeDutyCycle(self.current_speed)
-            sleep(delay)
-
-        # Set to final speed if it's not exactly divisible by increment
-        self.current_speed = speed
-        self.pwm.ChangeDutyCycle(self.current_speed)
 
     def forward(self, speed=25):
         if 'linux' in sys.platform:
