@@ -1,16 +1,14 @@
 
 from mongoengine import EmbeddedDocument, IntField, BooleanField, ReferenceField
 
-from cwa.Events import Rider
 
-Rider
 
 
 class Carrier(EmbeddedDocument):
     number = IntField()
     _occupied = BooleanField(default=False)
     lap_count = IntField(default=0)
-    _rider = ReferenceField(Rider)
+    _rider = ReferenceField('Rider')
     active = BooleanField(default=False)
 
     meta = {'db_alias': 'ops'}

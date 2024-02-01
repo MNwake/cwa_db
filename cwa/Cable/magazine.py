@@ -2,7 +2,7 @@ from mongoengine import EmbeddedDocument, BooleanField
 
 from cwa.Cable import StepperMotor
 
-StepperMotor
+
 
 
 class Magazine(EmbeddedDocument):
