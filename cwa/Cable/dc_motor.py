@@ -58,7 +58,7 @@ class DCMotor:
         """ Soft stop the motor """
         self.change_speed(0)
 
-    def emergency_brake(self):
+    def hard_stop(self):
         """ Immediate stop (hard stop) """
         if 'linux' in sys.platform:
             self.pwm.ChangeDutyCycle(0)

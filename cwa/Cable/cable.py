@@ -33,14 +33,13 @@ class Cable(Document):
         for i in range(self.num_carriers):
             carrier = Carrier(number=i + 1)
             self.carriers.append(carrier)
-        # Initialize the carriers list based on num_carriers
+        # Initialize the carriers® list based on num_carriers
 
         self.speed_settings = {
-            0: 0,
-            1: 25,
-            2: 50,
-            3: 75,
-            4: 100
+            'Zero': 0,
+            'Speed 1': 50,
+            'Speed 2': 75,
+            'Speed 3': 100
         }
     @property
     def riders_on_water(self):
@@ -65,7 +64,7 @@ class Cable(Document):
     @speed.setter
     def speed(self, value):
         if value in self.speed_settings:
-            self._speed = value
+            self._speed = self.speed_settings[value]
             # Set the speed of the motor
             if self.running:  # Check if the system is running before changing the speed
                 if self.direction == 'Forward':
@@ -99,7 +98,12 @@ class Cable(Document):
         self.fork.camera.stop_camera()
         self.magazine.disengage()
         self.rider_on_deck = None
-        self.carrier_pass_callback()
+        # self.carrier_pass_callback()
+
+    def emergency_stop(self):
+        self.e_brake = True
+        self.motor.hard_stop()
+        self.running = False
 
     def elevator_start(self):
         pass
