@@ -11,7 +11,7 @@ class Carrier(EmbeddedDocument):
     _rider = ReferenceField('Rider')
     active = BooleanField(default=False)
 
-    meta = {'db_alias': 'ops'}
+    # meta = {'db_alias': 'cable'}
 
     def __init__(self, **kw):
         super().__init__(**kw)

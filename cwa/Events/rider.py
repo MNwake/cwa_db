@@ -9,7 +9,7 @@ from cwa.Events import User
 class Rider(User):
     stance = db.StringField()
     year_started = db.IntField()
-    home_park = db.ReferenceField('CablePark')
+    home_park = db.ReferenceField('Park')
     bib_color = db.StringField()
     registered_contest = db.ListField(db.ReferenceField("Contest"))
     scorecards = db.ListField(db.ReferenceField("Scorecard"))

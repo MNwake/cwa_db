@@ -5,18 +5,18 @@ from cwa.Cable import Carrier, DCMotor, Fork, Magazine, MagneticSensor
 
 
 class Cable(Document):
-    park = ReferenceField('Park', required=True)
+    park = ReferenceField('Park')
     name = StringField(required=True)
     _speed = FloatField(default=0)
     num_carriers = IntField(default=8)
     lap_time = IntField(default=90)
     e_brake = BooleanField()
 
-    fork = EmbeddedDocumentField(Fork)
-    magazine = EmbeddedDocumentField(Magazine)
-    carriers = ListField(EmbeddedDocumentField(Carrier))
+    fork = EmbeddedDocumentField('Fork')
+    magazine = EmbeddedDocumentField('Magazine')
+    carriers = ListField(EmbeddedDocumentField('Carrier'))
 
-    meta = {'db_alias': 'ops'}
+    # meta = {'db_alias': 'cable'}
 
     def __init__(self, *args, **values):
         super(Cable, self).__init__(*args, **values)
@@ -28,19 +28,32 @@ class Cable(Document):
         self.carrier_sensor = MagneticSensor(pin=17, callback=self.carrier_pass_motor)
         self.running = False
         self.carrier_pass_callback = None
-        self.direction = 'Forward'
-
-        for i in range(self.num_carriers):
-            carrier = Carrier(number=i + 1)
-            self.carriers.append(carrier)
+        self.forward = True
+        #
+        # for i in range(self.num_carriers):
+        #     carrier = Carrier(number=i + 1)
+        #     self.carriers.append(carrier)
         # Initialize the carriers® list based on num_carriers
 
         self.speed_settings = {
             'Zero': 0,
-            'Speed 1': 50,
-            'Speed 2': 75,
-            'Speed 3': 100
+            'Idle': 5,
+            '1': 50,
+            '2': 75,
+            '3': 100
         }
+
+    def toggle_fork(self):
+        if not self.fork.engaged:
+            self.fork.engage()
+        else:
+            self.fork.disengage()
+
+    def toggle_magazine(self):
+        if not self.magazine.engaged:
+            self.magazine.engage()
+        else:
+            self.magazine.disengage()
     @property
     def riders_on_water(self):
         riders = []
@@ -63,14 +76,15 @@ class Cable(Document):
 
     @speed.setter
     def speed(self, value):
-        if value in self.speed_settings:
-            self._speed = self.speed_settings[value]
-            # Set the speed of the motor
-            if self.running:  # Check if the system is running before changing the speed
-                if self.direction == 'Forward':
-                    self.motor.forward(speed=self.speed_settings[value])
-                elif self.direction == 'Reverse':
-                    self.motor.reverse(speed=self.speed_settings[value])
+        print(value)
+        self._speed = value
+        print(self._speed)
+        # Set the speed of the motor
+        if self.running:  # Check if the system is running before changing the speed
+            if self.forward:
+                self.motor.forward(speed=self.speed)
+            else:
+                self.motor.reverse(speed=self.speed)
 
     def start(self):
         print('start')
@@ -80,9 +94,9 @@ class Cable(Document):
         if not any(carrier.active for carrier in self.carriers):
             self.carriers[0].active = True
 
-        self.speed = 'Idle'
+        self.speed = 'Zero'
 
-        self.motor.start_motor_thread(self.direction, speed=self.speed_settings[self.speed])
+        self.motor.start_motor_thread(self.forward, speed=self.speed)
 
         self.carrier_sensor.start()
         self.fork.camera.start_camera()

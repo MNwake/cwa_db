@@ -70,14 +70,12 @@ class DCMotor:
             self.pwm.stop()
             GPIO.cleanup()
 
-    def start_motor_thread(self, direction, speed=25):
+    def start_motor_thread(self, direction, speed=5):
         """Start the motor in a separate thread."""
-        if direction == 'Forward':
+        if direction:
             motor_thread = threading.Thread(target=self.forward, args=(speed,))
-        elif direction == 'Reverse':
-            motor_thread = threading.Thread(target=self.reverse, args=(speed,))
         else:
-            raise ValueError("Invalid motor direction: " + direction)
+            motor_thread = threading.Thread(target=self.reverse, args=(speed,))
 
         motor_thread.start()
 

@@ -9,6 +9,8 @@ class Magazine(EmbeddedDocument):
     loaded = BooleanField()
     engaged = BooleanField(default=False)
 
+    # meta = {'db_alias': 'cable'}
+
     def __init__(self, **kw):
         super().__init__(**kw)
         self.motor = StepperMotor(pulse_pin=21, direction_pin=20)

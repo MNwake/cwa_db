@@ -4,9 +4,9 @@ import mongoengine as db
 
 
 class DataBase:
-    host_name = 'mongodb+srv://events.xfmhxnj.mongodb.net'
+    host_name = 'cluster0.cnfx6tw.mongodb.net'
     username = 'admin'
-    password = 'OGYN9OA6prBilDNK'
+    password = 'WVK77BhOuso48dJ7'
 
     def __init__(self):
         self.archive = None
@@ -14,24 +14,27 @@ class DataBase:
         dns.resolver.default_resolver.nameservers = ['1.1.1.1']
 
         try:
-            db.connect(db='operations',
-                       alias='default',
-                       host=self.host_name,
-                       username=self.username,
-                       password=self.password,
-                       tlsCAFile=certifi.where())
+            self.database_name = 'cwa'  # Replace with your database name
+            db.connect(
+                db=self.database_name,
+                alias='default',  # Set to 'default' for default connection
+                host=f'mongodb+srv://{self.username}:{self.password}@{self.host_name}/{self.database_name}',
+                tlsCAFile=certifi.where()
+            )
+            print("Connected to MongoDB")
 
-            db.connect(db='test',
-                       alias='test_db',  # custom alias for test database
-                       host=self.host_name,
-                       username=self.username,
-                       password=self.password,
-                       tlsCAFile=certifi.where())
-
-            connection = True
+        # try:
+        #     self.database_name = 'cable'  # Replace with your database name
+        #     db.connect(
+        #         db=self.database_name,
+        #         alias='default',  # Set to 'default' for default connection
+        #         host=f'mongodb+srv://{self.username}:{self.password}@{self.host_name}/{self.database_name}',
+        #         tlsCAFile=certifi.where()
+        #     )
+        #     print("Connected to MongoDB")
 
 
         except Exception as e:
-            print(e)
+            print(f"Error connecting to MongoDB: {e}")
 
-
+# Initialize the database connection

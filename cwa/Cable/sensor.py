@@ -2,7 +2,6 @@ import sys
 import threading
 import time
 
-from mongoengine import EmbeddedDocument
 
 if 'linux' in sys.platform:
     import RPi.GPIO as GPIO
@@ -10,7 +9,8 @@ if 'linux' in sys.platform:
     GPIO.setmode(GPIO.BCM)
 
 
-class MagneticSensor(EmbeddedDocument):
+class MagneticSensor:
+
     def __init__(self, pin, callback, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.pin = pin
