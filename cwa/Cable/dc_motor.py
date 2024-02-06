@@ -8,10 +8,11 @@ from time import sleep, time
 
 class DCMotor:
     def __init__(self, in1_pin, in2_pin, en_pin):
+        self.set_speed = None
         self.in1_pin = in1_pin
         self.in2_pin = in2_pin
         self.en_pin = en_pin
-        self.current_speed = 0
+        self.current_speed = int(0)
 
         if 'linux' in sys.platform:
             GPIO.setmode(GPIO.BCM)
@@ -27,7 +28,11 @@ class DCMotor:
     def change_speed(self, speed, increment=5, delay=0.1):
         if 'linux' in sys.platform:
             """ Change the motor speed gradually """
-            steps = abs(speed - self.current_speed) // increment
+            speed = int(speed)
+            absolute = abs(speed - self.current_speed)
+            print(absolute)
+            steps = absolute // increment
+            print(steps)
 
             for _ in range(steps):
                 if speed > self.current_speed:
@@ -42,17 +47,19 @@ class DCMotor:
             self.current_speed = speed
             self.pwm.ChangeDutyCycle(self.current_speed)
 
-    def forward(self, speed=25):
+    def forward(self):
+        print('forward')
         if 'linux' in sys.platform:
             GPIO.output(self.in1_pin, GPIO.HIGH)
             GPIO.output(self.in2_pin, GPIO.LOW)
-            self.change_speed(speed)
+            self.change_speed(0)
 
-    def reverse(self, speed=25):
+
+    def reverse(self):
         if 'linux' in sys.platform:
             GPIO.output(self.in1_pin, GPIO.LOW)
             GPIO.output(self.in2_pin, GPIO.HIGH)
-            self.change_speed(speed)
+            self.change_speed(0)
 
     def soft_stop(self):
         """ Soft stop the motor """
@@ -70,12 +77,13 @@ class DCMotor:
             self.pwm.stop()
             GPIO.cleanup()
 
-    def start_motor_thread(self, direction, speed=5):
+    def start_motor_thread(self, direction):
+        print('start_motor_thread')
         """Start the motor in a separate thread."""
         if direction:
-            motor_thread = threading.Thread(target=self.forward, args=(speed,))
+            motor_thread = threading.Thread(target=self.forward)
         else:
-            motor_thread = threading.Thread(target=self.reverse, args=(speed,))
+            motor_thread = threading.Thread(target=self.reverse)
 
         motor_thread.start()
 

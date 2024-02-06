@@ -44,16 +44,24 @@ class Cable(Document):
         }
 
     def toggle_fork(self):
-        if not self.fork.engaged:
-            self.fork.engage()
+        # Check if the direction is forward before toggling the fork
+        if self.forward:
+            if not self.fork.engaged:
+                self.fork.engage()
+            else:
+                self.fork.disengage()
         else:
-            self.fork.disengage()
+            print("Fork cannot be toggled when the direction is not forward.")
 
     def toggle_magazine(self):
-        if not self.magazine.engaged:
-            self.magazine.engage()
+        # Check if the direction is forward before engaging the magazine
+        if self.forward:
+            if not self.magazine.engaged:
+                self.magazine.engage()
+            else:
+                self.magazine.disengage()
         else:
-            self.magazine.disengage()
+            print("Magazine cannot be engaged when the direction is not forward.")
     @property
     def riders_on_water(self):
         riders = []
@@ -76,15 +84,10 @@ class Cable(Document):
 
     @speed.setter
     def speed(self, value):
-        print(value)
         self._speed = value
-        print(self._speed)
         # Set the speed of the motor
         if self.running:  # Check if the system is running before changing the speed
-            if self.forward:
-                self.motor.forward(speed=self.speed)
-            else:
-                self.motor.reverse(speed=self.speed)
+            self.motor.change_speed(speed=value)
 
     def start(self):
         print('start')
@@ -94,10 +97,8 @@ class Cable(Document):
         if not any(carrier.active for carrier in self.carriers):
             self.carriers[0].active = True
 
-        self.speed = 'Zero'
-
-        self.motor.start_motor_thread(self.forward, speed=self.speed)
-
+        self.motor.start_motor_thread(self.forward)
+        print('passed start motor thread')
         self.carrier_sensor.start()
         self.fork.camera.start_camera()
         self.running = True

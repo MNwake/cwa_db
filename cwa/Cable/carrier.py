@@ -32,7 +32,6 @@ class Carrier(EmbeddedDocument):
         self.lap_count = 1
 
     def release(self):
-        print('rider removed')
         self._occupied = False
         self.rider = None
         self.lap_count = 0

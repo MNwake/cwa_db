@@ -37,5 +37,4 @@ class MagneticSensor:
         while self.running:
             if GPIO.input(self.pin) == GPIO.LOW:
                 self.callback()
-                print('SENSOR ACTIVE')
                 time.sleep(1)  # Debounce delay
