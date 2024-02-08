@@ -4,9 +4,9 @@ import mongoengine as db
 
 
 class DataBase:
-    host_name = 'cluster0.cnfx6tw.mongodb.net'
+    host_name = 'cluster0.giawkwl.mongodb.net'
     username = 'admin'
-    password = 'WVK77BhOuso48dJ7'
+    password = '0C4vS9ougL6uynVy'
 
     def __init__(self):
         self.archive = None
@@ -14,7 +14,7 @@ class DataBase:
         dns.resolver.default_resolver.nameservers = ['1.1.1.1']
 
         try:
-            self.database_name = 'cwa'  # Replace with your database name
+            self.database_name = 'main'  # Replace with your database name
             db.connect(
                 db=self.database_name,
                 alias='default',  # Set to 'default' for default connection

@@ -29,11 +29,14 @@ class Cable(Document):
         self.running = False
         self.carrier_pass_callback = None
         self.forward = True
-        #
-        # for i in range(self.num_carriers):
-        #     carrier = Carrier(number=i + 1)
-        #     self.carriers.append(carrier)
-        # Initialize the carriers® list based on num_carriers
+
+        # Initialize carriers list
+        self.carriers = []  # Reset the carriers list
+
+        # Add carriers up to num_carriers
+        for i in range(self.num_carriers):
+            carrier = Carrier(number=i + 1)
+            self.carriers.append(carrier)
 
         self.speed_settings = {
             'Zero': 0,
